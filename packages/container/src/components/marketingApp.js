@@ -15,7 +15,7 @@ const MarketingApp = () => {
     const history = useHistory();
 
     useEffect(() => {
-        mount(ref.current, {
+        const {onParentNavigate} = mount(ref.current, {
             onNavigate: ({pathname: nextPathname}) => {
                 // prevent navigation if current pathname and next pathname are same
                 const pathname = history.location;
@@ -25,7 +25,8 @@ const MarketingApp = () => {
                 
             }
         });
-    });
+        history.listen(onParentNavigate);
+    },[]);
     return <div ref={ref} />;
 };
 
