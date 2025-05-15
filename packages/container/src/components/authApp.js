@@ -29,4 +29,4 @@ const AuthApp = () => {
   return <div ref={ref} />;
 };
 
-export { AuthApp };
+export default AuthApp;
