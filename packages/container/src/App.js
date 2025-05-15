@@ -1,5 +1,5 @@
 import React, { lazy, Suspense, useState, useEffect } from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Router, Redirect, Route, Switch } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 import {
   StylesProvider,
@@ -21,8 +21,15 @@ const history = createBrowserHistory();
 
 export default () => {
   const [isSignedIn, setIsSigndIn] = useState(false);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      history.push('/dashboard');
+    }
+  },[isSignedIn]);
+
   return (
-    <BrowserRouter>
+    <Router history={history}>
       <StylesProvider generateClassName={generateClassName}>
         <div>
           <Header isSignedIn={isSignedIn} onSignOut={() => setIsSigndIn(false)}/>
@@ -32,6 +39,7 @@ export default () => {
                 <AuthLazy onSignIn={() => setIsSigndIn(true)}/>
               </Route>
               <Route path="/dashboard">
+               {!isSignedIn && <Redirect to="/" />}
                 <DashboardLazy />
               </Route>
               <Route path="/" component={MarketingLazy}></Route>
@@ -39,6 +47,6 @@ export default () => {
           </Suspense>
         </div>
       </StylesProvider>
-    </BrowserRouter>
+    </Router>
   );
 };
