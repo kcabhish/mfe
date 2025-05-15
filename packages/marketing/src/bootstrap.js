@@ -7,8 +7,12 @@ import { createMemoryHistory, createBrowserHistory } from 'history';
  * Mount function to start up the project
  * @param {*} el
  */
-const mount = (el, { onNavigate, defaultHistory }) => {
-  const history = defaultHistory || createMemoryHistory();
+const mount = (el, { onNavigate, defaultHistory, initialPath }) => {
+  const history = defaultHistory || createMemoryHistory({
+    // This will provide and initial entry for the memory history which will prevent the issue where users will have to click twice to load the 
+    // page.
+    initialEntries: [initialPath]
+  });
   if (onNavigate) {
     history.listen(onNavigate);
   }

@@ -8,11 +8,11 @@ const port = 8081;
 const devConfig = {
   mode: 'development',
   devServer: {
-    port,
+    port:8081,
     historyApiFallback: true,
   },
   output: {
-    publicPath: `http://localhost:${port}/`,
+    publicPath: `http://localhost:8081/`,
   },
   plugins: [
     new ModuleFederationPlugin({
