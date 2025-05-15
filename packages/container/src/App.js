@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useState } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import {
   StylesProvider,
@@ -8,7 +8,7 @@ import Progress from './components/Progress';
 import Header from './components/Header';
 
 const MarketingLazy = lazy(() => import('./components/marketingApp'));
-const authLazy = lazy(() => import('./components/AuthApp'));
+const AuthLazy = lazy(() => import('./components/authApp'));
 
 const generateClassName = createGenerateClassName({
   // instead of generating classnames as jss1, jss2 it will create ma1, ma2
@@ -16,14 +16,17 @@ const generateClassName = createGenerateClassName({
 });
 
 export default () => {
+  const [isSignedIn, setIsSigndIn] = useState(false);
   return (
     <BrowserRouter>
       <StylesProvider generateClassName={generateClassName}>
         <div>
-          <Header />
+          <Header isSignedIn={isSignedIn} onSignOut={() => setIsSigndIn(false)}/>
           <Suspense fallback={<Progress />}>
             <Switch>
-              <Route path="/auth" component={authLazy}></Route>
+              <Route path="/auth">
+                <AuthLazy onSignIn={() => setIsSigndIn(true)}/>
+              </Route>
               <Route path="/" component={MarketingLazy}></Route>
             </Switch>
           </Suspense>
